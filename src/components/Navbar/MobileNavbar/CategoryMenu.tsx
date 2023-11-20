@@ -6,6 +6,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 
+
 export default function CategoryMenu() {
   return (
     <Accordion type="single" collapsible>
