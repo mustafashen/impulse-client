@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -9,8 +9,11 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu"
+import { useCategoriesContext } from '@/contexts/CategoryContext'
 
 export default function CategoryMenu() {
+  const categories = useCategoriesContext()
+
   return (
     <NavigationMenu>
       <NavigationMenuList>

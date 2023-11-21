@@ -1,27 +1,26 @@
 import { fetchAllCategories } from "@/lib/api/navbar/category"
-import { createContext, useContext } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 
 async function getAllCategories() {
   const categories = await fetchAllCategories()
-  console.log(categories)
   return categories
 }
 
-async function buildCategoryTree() {
-  const categories = await getAllCategories()
+const CategoriesContext = createContext<any>([{id: '', name: '', parent_id: ''}])
 
-  // find the "all" category from its name
-  // create a parent object from it
-  // make a depth first search
-    // traverse categories that refers to all
-    // for each found category find categories that refers to them
-    // build the tree 
+export function CategoriesContextProvider({children}: {children: React.ReactElement}) {
 
-  
-  const root = categories
-    .find((category: any) => category.name === "all")
+  const [categories, setCategories] = useState(CategoriesContext)
 
-  
-  
+  useEffect(() => {
+    getAllCategories().then(categories => setCategories(categories))
+  }, [])
+
+  return (
+    <CategoriesContext.Provider value={categories}>
+      {children}
+    </CategoriesContext.Provider>
+  )
 }
 
+export const useCategoriesContext = () => useContext(CategoriesContext)
