@@ -10,25 +10,40 @@ import {
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu"
 import { useCategoriesContext } from '@/contexts/CategoryContext'
+import SubCategory from './SubCategory'
 
 export default function CategoryMenu() {
   const categories = useCategoriesContext()
 
+  const mainCategoryTemplate = (category: any) => (
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>{category.name}</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <SubCategory parent_id={category.id}/>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  )
+  
+  const renderCategories = (categories: any) => {
+    if (!categories || !categories.length)
+      return null
+
+    const mainCategories = categories
+      .filter((category: any) => category.name === 'all')[0].id
+
+    return categories.map((category: any) => {
+      if (category.parent_id === mainCategories && category.name !== 'all') {
+        return mainCategoryTemplate(category)
+      } 
+    })
+  }
+
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>Item One</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <NavigationMenuLink>Link</NavigationMenuLink>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>Item Two</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <NavigationMenuLink>Link</NavigationMenuLink>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
+      {
+      renderCategories(categories)
+      }
       </NavigationMenuList>
     </NavigationMenu>
   )
