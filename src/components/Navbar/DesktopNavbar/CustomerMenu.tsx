@@ -9,25 +9,32 @@ import {
     NavigationMenuTrigger,
     NavigationMenuViewport,
   } from "@/components/ui/navigation-menu"
+import { Heart, ShoppingCart, User } from 'react-feather'
   
 export default function CustomerMenu() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Cart</NavigationMenuTrigger>
+          <NavigationMenuTrigger>
+            <ShoppingCart/>
+          </NavigationMenuTrigger>
           <NavigationMenuContent>
             <NavigationMenuLink>CartItems</NavigationMenuLink>
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Wishlist</NavigationMenuTrigger>
+          <NavigationMenuTrigger>
+            <Heart/>
+          </NavigationMenuTrigger>
           <NavigationMenuContent>
             <NavigationMenuLink>WishlistItems</NavigationMenuLink>
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Account</NavigationMenuTrigger>
+          <NavigationMenuTrigger>
+            <User/>
+          </NavigationMenuTrigger>
           <NavigationMenuContent>
             <NavigationMenuLink>AccountItems</NavigationMenuLink>
           </NavigationMenuContent>

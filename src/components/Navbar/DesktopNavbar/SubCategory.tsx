@@ -9,7 +9,7 @@ export default function SubCategory({parent_id}: {parent_id: string}) {
     {
     subCategories.map((category: any) => {
       return (
-      <li key={category.id}>
+      <li key={category.id} className='flex flex-row flex-nowrap'>
         {category.name}
         <SubCategory parent_id={category.id}/>
       </li>)

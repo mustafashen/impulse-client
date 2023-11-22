@@ -12,7 +12,7 @@ export default function CategoryMenu() {
   const categories = useCategoriesContext()
   
   const mainCategoryTemplate = (category: any) => (
-    <AccordionItem value={category.id}>
+    <AccordionItem value={category.id} key={category.id}>
       <AccordionTrigger>{category.name}</AccordionTrigger>
       <AccordionContent>
         <SubCategory parent_id={category.id}/>  
