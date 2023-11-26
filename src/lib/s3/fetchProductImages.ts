@@ -26,7 +26,6 @@ async function getProductImages(product: {id: string}) {
     return images
 
   } catch (error: any) {
-    console.log(error)
     return {Error: error}
   }
 }

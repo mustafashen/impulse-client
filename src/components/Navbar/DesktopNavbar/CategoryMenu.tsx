@@ -16,7 +16,7 @@ export default function CategoryMenu() {
   const categories = useCategoriesContext()
 
   const mainCategoryTemplate = (category: any) => (
-    <NavigationMenuItem>
+    <NavigationMenuItem key={category.id}>
       <NavigationMenuTrigger>{category.name}</NavigationMenuTrigger>
       <NavigationMenuContent>
         <SubCategory parent_id={category.id}/>

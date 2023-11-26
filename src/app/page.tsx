@@ -1,12 +1,16 @@
 import ProductGrid from "@/components/Product/ProductGrid"
-import ProductGridWrapper from "@/components/Product/ProductGridWrapper"
-import { ProductsContextProvider } from "@/contexts/ProductContext"
-import { fetchAllCategories } from "@/lib/api/navbar/category"
+import { Metadata } from "next"
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: 'Impulse'
+  }
+}
 
 export default function Home() {
   return (
     <div>
-      <ProductGridWrapper/>
+      <ProductGrid category={'all'}/>
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import { useCategoriesContext } from '@/contexts/CategoryContext'
+import Link from 'next/link'
 import React from 'react'
 
 export default function SubCategory({parent_id}: {parent_id: string}) {
@@ -10,7 +11,13 @@ export default function SubCategory({parent_id}: {parent_id: string}) {
     subCategories.map((category: any) => {
       return (
       <li key={category.id} className='flex flex-row flex-nowrap'>
-        {category.name}
+        <Link
+          href={{
+          pathname: `/category/${category.name}`,
+          query: {id: category.id, name: category.name}
+          }}>
+          {category.name}
+        </Link>
         <SubCategory parent_id={category.id}/>
       </li>)
     })
