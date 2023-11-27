@@ -5,8 +5,9 @@ import { Button } from '../ui/button'
 import { getProductImages } from '@/lib/s3/fetchProductImages'
 import Image from 'next/image'
 import product_placeholder from "../../../public/images/product_placeholder.jpg"
+import Link from 'next/link'
 export default function ProductCard({product}: {product: any}) {
-  const {name, description, price} = product
+  const {name, description, price, id} = product
   const [images, setImages] = useState()
 
   useEffect(() =>  {
@@ -25,11 +26,17 @@ export default function ProductCard({product}: {product: any}) {
             height={300}
           />
         </CardContent>
-        <CardHeader>
-          <CardTitle>{name}</CardTitle>
-          <CardDescription>{description}</CardDescription>
-          <p>{price}$</p>
-        </CardHeader>
+        <Link
+          href={{
+          pathname: `/product/${id}`,
+          query: {id, name}
+          }}>
+          <CardHeader>
+            <CardTitle>{name}</CardTitle>
+            <CardDescription>{description}</CardDescription>
+            <p>{price}$</p>
+          </CardHeader>
+        </Link>
         <CardFooter>
           <Button>Add To Cart</Button>
         </CardFooter>
