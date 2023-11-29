@@ -1,3 +1,5 @@
+import ProductCarousel from '@/components/Product/ProductCarousel'
+import ProductInfo from '@/components/Product/ProductInfo'
 import { fetchProductsById } from '@/lib/api/product/product'
 import { fetchProductReviews } from '@/lib/api/review/review'
 import { Metadata } from 'next'
@@ -22,19 +24,13 @@ export default async function page(props: any) {
   
 
   return (
-    <div>
-      <div>
-        <div>
-          {/*Images carousel section*/}
+    <div className='flex flex-col flex-nowrap'>
+      <div className='flex flex-row'>
+        <div className='w-1/2'>
+          <ProductCarousel product_id={id}/>
         </div>
         <div>
-          <ul>
-            <li>{name}</li>
-            <li>{price}</li>
-            <li>{stock}</li>
-            <li>{description}</li>
-            {/* <li>{features}</li> map features and put them in a table*/}
-          </ul>
+          <ProductInfo productInfo={productData[0]}/>
         </div>
       </div>
       <div>
