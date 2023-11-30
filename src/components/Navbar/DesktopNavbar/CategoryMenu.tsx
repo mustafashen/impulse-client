@@ -11,6 +11,8 @@ import {
 } from "@/components/ui/navigation-menu"
 import { useCategoriesContext } from '@/contexts/CategoryContext'
 import SubCategory from './SubCategory'
+import Link from 'next/link'
+
 
 export default function CategoryMenu() {
   const categories = useCategoriesContext()
@@ -19,7 +21,18 @@ export default function CategoryMenu() {
     <NavigationMenuItem key={category.id}>
       <NavigationMenuTrigger>{category.name}</NavigationMenuTrigger>
       <NavigationMenuContent>
-        <SubCategory parent_id={category.id}/>
+        <ul>
+          <SubCategory parent_id={category.id}/>
+          <li>
+            <Link
+              href={{
+              pathname: `/category/${category.name}`,
+              query: {id: category.id, name: category.name}
+              }}>
+              All {category.name}
+            </Link>
+          </li>
+        </ul>
       </NavigationMenuContent>
     </NavigationMenuItem>
   )

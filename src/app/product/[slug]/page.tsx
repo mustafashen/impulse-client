@@ -1,5 +1,6 @@
 import ProductCarousel from '@/components/Product/ProductCarousel'
 import ProductInfo from '@/components/Product/ProductInfo'
+import ProductReview from '@/components/Product/ProductReview'
 import { fetchProductsById } from '@/lib/api/product/product'
 import { fetchProductReviews } from '@/lib/api/review/review'
 import { Metadata } from 'next'
@@ -22,7 +23,6 @@ export default async function page(props: any) {
 
   const reviewData = await fetchProductReviews(id)
   
-
   return (
     <div className='flex flex-col flex-nowrap'>
       <div className='flex flex-row'>
@@ -34,7 +34,7 @@ export default async function page(props: any) {
         </div>
       </div>
       <div>
-        {/*Reviews section*/}
+        <ProductReview reviews={reviewData}/>
       </div>
     </div>
   )

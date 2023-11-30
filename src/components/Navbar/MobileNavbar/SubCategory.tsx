@@ -5,8 +5,10 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { useCategoriesContext } from '@/contexts/CategoryContext'
+import Link from 'next/link'
+import { ChevronRight } from 'react-feather'
 
-export default function SubCategory({parent_id}: {parent_id: string}) {
+export default function SubCategory({parent_id, parent_name}: {parent_id: string, parent_name: string}) {
   const categories = useCategoriesContext()
   const subCategories = categories.filter((category: any) => category.parent_id === parent_id)
   return (
@@ -18,18 +20,44 @@ export default function SubCategory({parent_id}: {parent_id: string}) {
 
         if (sub_subCategories.length > 0) {
           return (
-          <AccordionItem value={category.id} key={category.id}>
-            <AccordionTrigger>{category.name}</AccordionTrigger>
-            <AccordionContent>
-              <SubCategory parent_id={category.id}/>
-            </AccordionContent>
-          </AccordionItem>
+            <AccordionItem value={category.id} key={category.id}>
+              <AccordionTrigger>{category.name}</AccordionTrigger>
+              <AccordionContent>
+                <SubCategory parent_id={category.id} parent_name={category.name}/>
+              </AccordionContent>
+            </AccordionItem>
           )
         } else {
           return (
-            <div key={category.id} className='py-2'>
-              {category.name}
-            </div>
+            <>
+              <AccordionItem 
+                value={category.id} 
+                key={category.id} 
+                className='py-2'>
+                <Link
+                  href={{
+                  pathname: `/category/${category.name}`,
+                  query: {id: category.id, name: category.name}
+                }}>
+                  <span>{category.name}</span>
+                  <ChevronRight className='inline'/>
+                </Link>
+              </AccordionItem>
+              <AccordionItem 
+                value={parent_name + '_all'} 
+                key={parent_id + '_all'}
+                className='py-2'>
+                  <Link
+                    href={{
+                    pathname: `/category/${category.name}`,
+                    query: {id: category.id, name: category.name}
+                  }}>
+                    <span>All {parent_name}</span>
+                    <ChevronRight className='inline'/>
+                  </Link>
+              </AccordionItem>
+            </>
+
           )
         }
       })
