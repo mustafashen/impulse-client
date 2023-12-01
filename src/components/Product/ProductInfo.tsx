@@ -24,7 +24,6 @@ export default function ProductInfo({productInfo} : any) {
       </div>
       <p>In Stock: {stock}</p>
       <div>
-      <hr></hr>
         <ul>
         {
           listFeatures()

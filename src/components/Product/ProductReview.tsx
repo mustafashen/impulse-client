@@ -1,30 +1,38 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
+import { StarFilledIcon } from '@radix-ui/react-icons'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
-import { CardStackIcon, StarFilledIcon } from '@radix-ui/react-icons'
+import { fetchCustomerName } from '@/lib/api/customer/customer'
 
-export default function ProductReview({reviews}: {reviews: any}) {
-  
+export default function ProductReview({review}: {review: any}) {
+
+  const [customerName, setCustomerName] = useState('')
+  useEffect(() => {
+    const getCustomerName = async (customer_id: string) => {
+      const res = await fetchCustomerName(customer_id)
+      setCustomerName(res.customer.name)
+    }
+    getCustomerName(review.customer_id)
+  })
+
   return (
-    <div>
+  <Card>
+    <CardHeader>
+      <CardTitle>
+        {
+          customerName
+        }
+      </CardTitle>
+      <div className='flex flex-row flex-nowrap'>
       {
-        reviews.map((review: any) => {
-          return (
-            <Card key={review.id}>
-              <CardHeader>
-                <CardTitle>Fetch customer name</CardTitle>
-                <div className='flex flex-row flex-nowrap'>
-                {
-                  Array(review.rating).fill(<StarFilledIcon/>).map((star: any) => star)
-                }
-                </div>
-              </CardHeader>
-              <CardContent>
-                {review.comment}
-              </CardContent>
-            </Card>
-          )
-        })
+        Array.from({length: review.rating}, (el, idx) => <StarFilledIcon key={idx + '_' + review.id}/>)
+             .map((star: any) => star)
       }
-    </div>
+      </div>
+    </CardHeader>
+    <CardContent>
+      {review.comment}
+    </CardContent>
+  </Card>
   )
 }

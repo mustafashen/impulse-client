@@ -1,6 +1,6 @@
 import ProductCarousel from '@/components/Product/ProductCarousel'
 import ProductInfo from '@/components/Product/ProductInfo'
-import ProductReview from '@/components/Product/ProductReview'
+import ProductReviews from '@/components/Product/ProductReviews'
 import { fetchProductsById } from '@/lib/api/product/product'
 import { fetchProductReviews } from '@/lib/api/review/review'
 import { Metadata } from 'next'
@@ -34,7 +34,10 @@ export default async function page(props: any) {
         </div>
       </div>
       <div>
-        <ProductReview reviews={reviewData}/>
+        <h1>Reviews</h1>
+        <div>
+          <ProductReviews reviews={reviewData}/>
+        </div>
       </div>
     </div>
   )
