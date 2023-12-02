@@ -10,8 +10,12 @@ import {
     NavigationMenuViewport,
   } from "@/components/ui/navigation-menu"
 import { Heart, ShoppingCart, User } from 'react-feather'
+import { useCartContext } from '@/contexts/CartContext'
+import { useWishlistContext } from '@/contexts/WishlistContext'
   
 export default function CustomerMenu() {
+  const {cartItems}: any  = useCartContext()
+  const {wishlistItems}: any = useWishlistContext()
   return (
     <NavigationMenu>
       <NavigationMenuList>
@@ -20,7 +24,7 @@ export default function CustomerMenu() {
             <ShoppingCart/>
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <NavigationMenuLink>CartItems</NavigationMenuLink>
+            <NavigationMenuLink>{cartItems.length}</NavigationMenuLink>
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>
@@ -28,7 +32,7 @@ export default function CustomerMenu() {
             <Heart/>
           </NavigationMenuTrigger>
           <NavigationMenuContent>
-            <NavigationMenuLink>WishlistItems</NavigationMenuLink>
+            <NavigationMenuLink>{wishlistItems.length}</NavigationMenuLink>
           </NavigationMenuContent>
         </NavigationMenuItem>
         <NavigationMenuItem>

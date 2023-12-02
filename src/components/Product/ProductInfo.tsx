@@ -19,8 +19,8 @@ export default function ProductInfo({productInfo} : any) {
       <h2 className='opacity-50'>{description}</h2>
       <p className='text-2xl'>$ {price}</p>
       <div className='flex flex-row flex-nowrap justify-center items-center gap-3'>
+        <Button><ShoppingCart/>Add To Cart</Button>
         <Button><Heart/></Button>
-        <Button>Add To Cart<ShoppingCart/></Button>
       </div>
       <p>In Stock: {stock}</p>
       <div>
