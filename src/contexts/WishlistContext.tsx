@@ -2,11 +2,12 @@
 import { createContext, useContext, useReducer } from "react"
 
 function wishlistReducer(state: ItemType[], action: {wishlistItem: ItemType}) {
+    console.log('wishlistReducer')
     let stateCopy = [...state]
     let {wishlistItem} = action
-    const {productID} = wishlistItem
+    const {id} = wishlistItem
 
-    const existingIndex = stateCopy.findIndex((el: ItemType) => el.productID === productID)
+    const existingIndex = stateCopy.findIndex((el: ItemType) => el.id === id)
 
     if (existingIndex === -1) {
         stateCopy = [...stateCopy, wishlistItem]
@@ -17,7 +18,7 @@ function wishlistReducer(state: ItemType[], action: {wishlistItem: ItemType}) {
     return stateCopy
 }
 
-const WishlistContext = createContext({})
+const WishlistContext = createContext<WishlistContextType | null>(null)
 
 export function WishlistContextProvider({children} : {children: React.ReactElement}) {
     

@@ -1,10 +1,12 @@
 type ActionType = 'ADD' | 'DELETE' | 'QTY_INC' | 'QTY_DEC'
 
 type ItemType = {
-    productID: string,
-    productName: string,
-    productPrice: string,
-    quantity: number
+    id: string,
+    name: string,
+    price: string,
+    quantity: number,
+    description: string,
+    images: string[],
 }
 
 type ItemsType = ItemType[]

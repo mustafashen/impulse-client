@@ -2,27 +2,27 @@
 import { createContext, useContext, useReducer } from "react"
 
 const addCartItem = (state: ItemsType, cartItem: ItemType) => [...state, {...cartItem, quantity: 1}]
-const delCartItem = (state: ItemsType, productID: string) => {
+const delCartItem = (state: ItemsType, id: string) => {
     state.map((item: ItemType, idx: number) => {
-        if (item.productID === productID) {
+        if (item.id === id) {
             state.splice(idx, 1)
             return
         }
     })
     console.log(state)
 }
-const qtyIncCartItem = (state: ItemsType, productID: string) => {
+const qtyIncCartItem = (state: ItemsType, id: string) => {
     state.map((item: ItemType, idx: number) => {
-        if (item.productID === productID) {
+        if (item.id === id) {
             ++item.quantity
             return
         }
     })
     return state
 }
-const qtyDecCartItem = (state: ItemsType, productID: string) => {
+const qtyDecCartItem = (state: ItemsType, id: string) => {
     state.map((item: ItemType, idx: number) => {
-        if (item.productID === productID) {
+        if (item.id === id) {
             --item.quantity
             return
         }
@@ -33,11 +33,12 @@ const qtyDecCartItem = (state: ItemsType, productID: string) => {
 function reduceCartItems(state: ItemsType, action: {type: ActionType, cartItem: ItemType}) {
     let stateCopy = [...state]
     let {type, cartItem} = action
-    const {productID} = cartItem
+    const {id} = cartItem
 
+    console.log(type, cartItem)
     if (type === 'ADD') {
         stateCopy.map((item: ItemType) => {
-            if (item.productID === productID) {
+            if (item.id === id) {
                 type = 'QTY_INC'
                 return
             }
@@ -49,13 +50,13 @@ function reduceCartItems(state: ItemsType, action: {type: ActionType, cartItem: 
             stateCopy = addCartItem(stateCopy, cartItem)
             break;
         case 'DELETE':
-            delCartItem(stateCopy, cartItem.productID)
+            delCartItem(stateCopy, cartItem.id)
             break;
         case 'QTY_INC':
-            qtyIncCartItem(stateCopy, cartItem.productID)
+            qtyIncCartItem(stateCopy, cartItem.id)
             break;
         case 'QTY_DEC':
-            qtyDecCartItem(stateCopy, cartItem.productID)
+            qtyDecCartItem(stateCopy, cartItem.id)
             break;
         default:
             break;
@@ -63,7 +64,7 @@ function reduceCartItems(state: ItemsType, action: {type: ActionType, cartItem: 
 
     if (type === 'QTY_DEC') {
         stateCopy.map((item: ItemType, idx: number) => {
-            if (item.productID === productID) {
+            if (item.id === id) {
                 if (item.quantity === 0) {
                     stateCopy.splice(idx, 1)
                     return
