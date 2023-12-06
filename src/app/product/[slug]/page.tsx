@@ -3,6 +3,7 @@ import ProductInfo from '@/components/Product/ProductInfo'
 import ProductReviews from '@/components/Product/ProductReviews'
 import { fetchProductsById } from '@/lib/api/product/product'
 import { fetchProductReviews } from '@/lib/api/review/review'
+import { getProductImages } from '@/lib/s3/fetchProductImages'
 import { Metadata } from 'next'
 import React from 'react'
 
@@ -16,21 +17,18 @@ export default async function page(props: any) {
   const {searchParams} = props
   const {name, id} = searchParams
   
-  // Handle 404 case for fetch responses
-
   const productData = await fetchProductsById(id)
-  const {price, stock, description, features} = productData[0]
-
   const reviewData = await fetchProductReviews(id)
-  
+  const images = await getProductImages({id})
+
   return (
     <div className='flex flex-col flex-nowrap'>
       <div className='flex flex-row'>
         <div className='w-1/2'>
-          <ProductCarousel product_id={id}/>
+          <ProductCarousel images={images}/>
         </div>
         <div>
-          <ProductInfo productInfo={productData[0]}/>
+          <ProductInfo productInfo={{...productData[0], images}}/>
         </div>
       </div>
       <div>

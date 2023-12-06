@@ -5,15 +5,8 @@ import { getProductImages } from '@/lib/s3/fetchProductImages'
 import Image from 'next/image'
 
 
-export default function ProductCarousel({product_id} : {product_id: string}) {
-  const [images, setImages] = useState([])
+export default function ProductCarousel({images} : {images: string[]}) {
 
-  useEffect(() =>  {
-    getProductImages({id: product_id}).then((images) => {
-      setImages(images)
-    })
-  }, [])
-  
   return (
     <div>
       <Carousel >

@@ -1,5 +1,3 @@
-'use client'
-
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { Minus, Plus, ShoppingCart } from 'react-feather'
 import { useCartContext } from '@/contexts/CartContext'
@@ -15,7 +13,7 @@ export default function CartItem({item}: {item: any}) {
   const {dispatchCartItems}: any = useCartContext()
 
   function handleCartItemInc(item: ItemType) {
-    console.log('item')
+    console.log(item)
     dispatchCartItems({type: 'QTY_INC', cartItem: {id: item.id}})
   }
 
@@ -35,9 +33,15 @@ export default function CartItem({item}: {item: any}) {
             <div>
               <div>${item.price}</div>
               <div>
-                <Button onClick={() => handleCartItemDec(item)}><MinusIcon/></Button>
+                <Button 
+                  onClick={() => {handleCartItemDec(item)}} 
+                  size={'icon'} 
+                  variant={'outline'}><MinusIcon/></Button>
                 <span>{item.quantity}</span>
-                <Button onClick={() => handleCartItemInc(item)}><PlusIcon/></Button>
+                <Button 
+                  onClick={() => {handleCartItemInc(item)}} 
+                  size={'icon'} 
+                  variant={'outline'}><PlusIcon/></Button>
               </div>
             </div>
         </CardContent>

@@ -1,10 +1,10 @@
 import React from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import Image from 'next/image'
 import product_placeholder from "../../../../../../public/images/product_placeholder.jpg"
 import { SheetFooter } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
-import { HeartIcon } from '@radix-ui/react-icons'
+import { Cross1Icon, HeartIcon } from '@radix-ui/react-icons'
 import { useWishlistContext } from '@/contexts/WishlistContext'
 
 export default function WishlistItem({item}: {item: any}) {
@@ -15,7 +15,7 @@ export default function WishlistItem({item}: {item: any}) {
   }
 
   return (
-    <Card key={item.id} className='flex flex-row flex-nowrap w-full justify-between'>
+    <Card key={item.id} className='relative flex flex-row flex-nowrap w-full justify-between'>
     <div className='flex-grow'>
       <CardHeader>
         <CardTitle>
@@ -26,9 +26,9 @@ export default function WishlistItem({item}: {item: any}) {
         <div>
           <p>${item.price}</p>
         </div>
-        <SheetFooter>
-          <Button onClick={handleWishlistToggle}><HeartIcon/></Button>
-        </SheetFooter>
+        <div>
+          <Button onClick={handleWishlistToggle} variant={'ghost'} size={'icon'} className='absolute top-0 right-0 rounded-full'><Cross1Icon/></Button>
+        </div>
       </CardContent>
     </div>
     <div className='flex justify-center items-center pr-4'>
