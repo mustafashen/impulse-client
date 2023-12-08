@@ -1,12 +1,12 @@
 import { fetchCustomerName } from '@/lib/api/customer/customer'
 import ProductReview from './ProductReview'
 
-export default function ProductReviews({reviews}: {reviews: any}) {
+export default function ProductReviews({reviews}: {reviews: Reviews}) {
   
   return (
     <div>
       {
-        reviews.map((review: any) => {
+        reviews.map((review: Review) => {
           return (
             <ProductReview key={review.id} review={review}/>
           )

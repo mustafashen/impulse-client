@@ -17,7 +17,7 @@ import Link from 'next/link'
 export default function CategoryMenu() {
   const categories = useCategoriesContext()
 
-  const mainCategoryTemplate = (category: any) => (
+  const mainCategoryTemplate = (category: Category) => (
     <NavigationMenuItem key={category.id}>
       <NavigationMenuTrigger>{category.name}</NavigationMenuTrigger>
       <NavigationMenuContent>
@@ -37,14 +37,14 @@ export default function CategoryMenu() {
     </NavigationMenuItem>
   )
   
-  const renderCategories = (categories: any) => {
+  const renderCategories = (categories: Categories) => {
     if (!categories || !categories.length)
       return null
 
     const mainCategories = categories
-      .filter((category: any) => category.name === 'all')[0].id
+      .filter((category: Category) => category.name === 'all')[0].id
 
-    return categories.map((category: any) => {
+    return categories.map((category: Category) => {
       if (category.parent_id === mainCategories && category.name !== 'all') {
         return mainCategoryTemplate(category)
       } 

@@ -10,25 +10,25 @@ export default function Wishlist() {
   const wishlist = useWishlistContext()
   return (
     <Sheet>
-    <SheetTrigger>
-      <Heart/>
-    </SheetTrigger>
-    <SheetContent side={'right'}>
-      <SheetHeader>
-        <SheetTitle>
-          Your Wishlist
-        </SheetTitle>
-      </SheetHeader>
-      <div>
-          {
-            wishlist?.wishlistItems.map((item => {
-              return (
-                <WishlistItem key={item.id} item={item}/>
-              )
-            }))
-          }
-      </div>
-    </SheetContent>
-  </Sheet>
+      <SheetTrigger>
+        <Heart/>
+      </SheetTrigger>
+      <SheetContent side={'right'}>
+        <SheetHeader>
+          <SheetTitle>
+            Your Wishlist
+          </SheetTitle>
+        </SheetHeader>
+        <div>
+            {
+              wishlist?.wishlistItems.map((item => {
+                return (
+                  <WishlistItem key={item.id} item={item}/>
+                )
+              }))
+            }
+        </div>
+      </SheetContent>
+    </Sheet>
   )
 }

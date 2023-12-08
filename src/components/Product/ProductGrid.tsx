@@ -22,7 +22,7 @@ export default function ProductGrid({category}: {category: string}) {
     <div className='grid'>
       { 
         products.length > 0 ? 
-        products.map((product: any) => {
+        products.map((product: Product) => {
           return (
             <ProductCard key={product.id} product={product} />
           )

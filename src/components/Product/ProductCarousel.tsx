@@ -11,7 +11,7 @@ export default function ProductCarousel({images} : {images: string[]}) {
     <div>
       <Carousel >
         {
-          images.map((image: any, index: any) => {
+          images.map((image: string, index: number) => {
             return (
               <div 
                 key={index}

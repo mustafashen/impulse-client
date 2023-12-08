@@ -4,7 +4,7 @@ import { Heart, ShoppingCart } from 'react-feather'
 import { useCartContext } from '@/contexts/CartContext'
 import { useWishlistContext } from '@/contexts/WishlistContext'
 
-export default function ProductInfo({productInfo} : any) {
+export default function ProductInfo({productInfo} : {productInfo: Product}) {
   const {id, price, stock, description, features, name, images} = productInfo
   
   const {dispatchCartItems}: any = useCartContext()
@@ -34,7 +34,7 @@ export default function ProductInfo({productInfo} : any) {
         <ul>
         {
           listFeatures()
-            .map((key: any) => {
+            .map((key: string) => {
               return <li key={key}>{key}: {features[key]}</li>
             })
         }

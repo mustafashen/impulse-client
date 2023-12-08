@@ -17,7 +17,7 @@ async function getProductImages(product: {id: string}) {
     const list_resS3 = await s3.send(list_command)
     if (list_resS3['$metadata'].httpStatusCode !== 200) throw "5000"
 
-    const images: any = []
+    const images: string[] = []
     list_resS3.Contents.forEach(
         (item: {Key: string}) => {
           images.push(`https://${process.env.S3_BUCKET}.s3.${process.env.S3_REGION}.amazonaws.com/${item.Key}`)

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Cross1Icon, HeartIcon } from '@radix-ui/react-icons'
 import { useWishlistContext } from '@/contexts/WishlistContext'
 
-export default function WishlistItem({item}: {item: any}) {
+export default function WishlistItem({item}: {item: ItemType}) {
   const {dispatchWishlistItems}: any = useWishlistContext()
   function handleWishlistToggle() {
       //@ts-ignore

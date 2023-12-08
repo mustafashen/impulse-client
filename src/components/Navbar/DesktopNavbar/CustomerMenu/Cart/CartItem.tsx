@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button'
 import { MinusIcon, PlusIcon } from '@radix-ui/react-icons'
 
 
-export default function CartItem({item}: {item: any}) {
+export default function CartItem({item}: {item: ItemType}) {
 
   const {dispatchCartItems}: any = useCartContext()
 

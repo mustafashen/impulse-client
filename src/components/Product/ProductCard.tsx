@@ -9,13 +9,13 @@ import Link from 'next/link'
 import { Heart, ShoppingCart } from 'react-feather'
 import { useCartContext } from '@/contexts/CartContext'
 import { useWishlistContext } from '@/contexts/WishlistContext'
-export default function ProductCard({product}: {product: any}) {
+export default function ProductCard({product}: {product: Product}) {
   const {name, description, price, id} = product
-  const [images, setImages] = useState()
+  const [images, setImages] = useState<string[]>()
 
   useEffect(() =>  {
-    getProductImages({id: product.id}).then((images) => {
-      setImages(images)
+    getProductImages({id: product.id}).then((imageURLs) => {
+      if (Array.isArray(imageURLs)) setImages(imageURLs)
     })
   }, [])
 

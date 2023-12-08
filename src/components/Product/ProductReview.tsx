@@ -1,10 +1,10 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { StarFilledIcon } from '@radix-ui/react-icons'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { fetchCustomerName } from '@/lib/api/customer/customer'
 
-export default function ProductReview({review}: {review: any}) {
+export default function ProductReview({review}: {review: Review}) {
 
   const [customerName, setCustomerName] = useState('')
   useEffect(() => {
@@ -26,7 +26,7 @@ export default function ProductReview({review}: {review: any}) {
       <div className='flex flex-row flex-nowrap'>
       {
         Array.from({length: review.rating}, (el, idx) => <StarFilledIcon key={idx + '_' + review.id}/>)
-             .map((star: any) => star)
+             .map((star: ReactElement) => star)
       }
       </div>
     </CardHeader>

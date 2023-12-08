@@ -12,7 +12,7 @@ import Link from 'next/link'
 export default function CategoryMenu() {
   const categories = useCategoriesContext()
   
-  const mainCategoryTemplate = (category: any) => (
+  const mainCategoryTemplate = (category: Category) => (
     <AccordionItem value={category.id} key={category.id}>
       <AccordionTrigger>{category.name}</AccordionTrigger>
       <AccordionContent>
@@ -21,14 +21,14 @@ export default function CategoryMenu() {
     </AccordionItem>
   )
   
-  const listCategories = (categories: any) => {
+  const listCategories = (categories: Categories) => {
     if (!categories || !categories.length)
       return null
 
     const mainCategories = categories
-      .filter((category: any) => category.name === 'all')[0].id
+      .filter((category: Category) => category.name === 'all')[0].id
 
-    return categories.map((category: any) => {
+    return categories.map((category: Category) => {
       if (category.parent_id === mainCategories && category.name !== 'all') {
         return mainCategoryTemplate(category)
       } 

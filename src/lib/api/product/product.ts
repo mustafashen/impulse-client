@@ -6,7 +6,7 @@ async function fetchAllProducts() {
   return data
 }
 
-async function fetchProductsByCategory(category: any) {
+async function fetchProductsByCategory(category: {category_id: string}) {
 
   const response = await fetch(process.env.API_URL + '/client/product/category', {
     method: 'POST',

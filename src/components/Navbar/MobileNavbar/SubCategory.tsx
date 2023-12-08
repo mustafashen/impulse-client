@@ -10,13 +10,13 @@ import { ChevronRight } from 'react-feather'
 
 export default function SubCategory({parent_id, parent_name}: {parent_id: string, parent_name: string}) {
   const categories = useCategoriesContext()
-  const subCategories = categories.filter((category: any) => category.parent_id === parent_id)
+  const subCategories = categories.filter((category: Category) => category.parent_id === parent_id)
   return (
     <ul>
       {
-      subCategories.map((category: any) => {
+      subCategories.map((category: Category) => {
         const sub_parent_id = category.id
-        const sub_subCategories = categories.filter((category: any) => category.parent_id === sub_parent_id)
+        const sub_subCategories = categories.filter((category: Category) => category.parent_id === sub_parent_id)
 
         if (sub_subCategories.length > 0) {
           return (
