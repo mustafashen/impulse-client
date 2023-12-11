@@ -1,4 +1,3 @@
-import { fetchCustomerName } from '@/lib/api/customer/customer'
 import ProductReview from './ProductReview'
 
 export default function ProductReviews({reviews}: {reviews: Reviews}) {

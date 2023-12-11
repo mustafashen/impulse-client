@@ -3,12 +3,24 @@ async function fetchCustomerName(customer_id: string) {
   const response = await fetch(process.env.API_URL + '/client/customer/name', {
     method: 'POST',
     cache: 'no-cache',
-    //@ts-ignore
     headers: {
       'Content-Type': 'application/json',
-      'API-Key': process.env.DATA_API_KEY,
     },
     body: JSON.stringify({customer: {id: customer_id}}),
+  })
+  
+  const data = await response.json()
+  return data
+}
+
+async function fetchCustomerInfo(token: string) {
+  const response = await fetch(process.env.API_URL + '/client/customer/info', {
+    method: 'POST',
+    cache: 'no-cache',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token
+    }
   })
   
   const data = await response.json()
@@ -20,10 +32,8 @@ async function loginCustomer(customer: CustomerLogin | {}) {
   const response = await fetch(process.env.API_URL + '/client/customer/login', {
     method: 'POST',
     cache: 'no-cache',
-    //@ts-ignore
     headers: {
       'Content-Type': 'application/json',
-      'API-Key': process.env.DATA_API_KEY,
     },
     body: JSON.stringify({customer}),
   })
@@ -37,10 +47,8 @@ async function signupCustomer(customer: Customer | {}) {
   const response = await fetch(process.env.API_URL + '/client/customer/signup', {
     method: 'POST',
     cache: 'no-cache',
-    //@ts-ignore
     headers: {
       'Content-Type': 'application/json',
-      'API-Key': process.env.DATA_API_KEY,
     },
     body: JSON.stringify({customer}),
   })
@@ -51,6 +59,7 @@ async function signupCustomer(customer: Customer | {}) {
 
 export {
   fetchCustomerName,
+  fetchCustomerInfo,
   loginCustomer,
   signupCustomer
 }
