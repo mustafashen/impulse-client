@@ -9,10 +9,7 @@ import { redirect } from 'next/navigation'
 
 export default function AccessCard() {
 
-  async function redirectToAccount() {
-    'use server'
-    redirect('/account')
-  }
+
 
   return (
     <Tabs defaultValue="signup" className="w-[400px] m-auto">
@@ -21,7 +18,7 @@ export default function AccessCard() {
         <TabsTrigger value="login">Login</TabsTrigger>
       </TabsList>
       <SignupTab/>
-      <LoginTab redirectToAccount={redirectToAccount}/>
+      <LoginTab/>
     </Tabs>
   )
 }

@@ -10,7 +10,9 @@ export default function ProductReview({review}: {review: Review}) {
   useEffect(() => {
     const getCustomerName = async (customer_id: string) => {
       const res = await fetchCustomerName(customer_id)
-      setCustomerName(res.customer.name)
+      if (res.Error) {
+        setCustomerName('[Deleted]')
+      } else setCustomerName(res.customer.name)
     }
     getCustomerName(review.customer_id)
   })

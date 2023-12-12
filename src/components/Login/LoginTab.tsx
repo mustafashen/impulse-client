@@ -19,13 +19,17 @@ import { loginCustomer } from "@/lib/api/customer/customer"
 import { setCookie } from "@/lib/cookies/cookieMethods"
 
 type LoginState = CustomerLogin | {}
-export default function LoginTab({redirectToAccount}: {redirectToAccount: () => void}) {
+export default function LoginTab() {
   const [login, setLogin] = useState<LoginState>({})
+  const [loginMessage, setLoginMessage] = useState('')
 
   const handleLogin = async (state: LoginState) => {
     const res = await loginCustomer(state)
-    setCookie('customer_access_token', res.token)
-    redirectToAccount()
+    if (res.Error) {
+      setLoginMessage(res.Error.Server)
+    } else {
+      setCookie('customer_access_token', res.token)
+    }
   }
 
   const handleChange = (event: any) => {
@@ -33,8 +37,8 @@ export default function LoginTab({redirectToAccount}: {redirectToAccount: () => 
     setLogin({...login, [targetId]: event.target.value})
   }
 
-  const handleClick = () => {
-    handleLogin(login)
+  const handleClick = async () => {
+    await handleLogin(login)
   }
 
   return (
@@ -58,8 +62,9 @@ export default function LoginTab({redirectToAccount}: {redirectToAccount: () => 
               onChange={handleChange}/>
           </div>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex flex-col items-start">
           <Button onClick={handleClick}>Login</Button>
+          <div className="text-red-700">{loginMessage}</div>
         </CardFooter>
       </Card>
     </TabsContent>

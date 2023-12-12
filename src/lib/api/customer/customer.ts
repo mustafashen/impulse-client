@@ -8,7 +8,7 @@ async function fetchCustomerName(customer_id: string) {
     },
     body: JSON.stringify({customer: {id: customer_id}}),
   })
-  
+
   const data = await response.json()
   return data
 }
@@ -22,13 +22,40 @@ async function fetchCustomerInfo(token: string) {
       'Authorization': token
     }
   })
-  
+
+  const data = await response.json()
+  return data
+}
+
+async function fetchCustomerOrder(token: string) {
+  const response = await fetch(process.env.API_URL + '/client/order/customer', {
+    method: 'POST',
+    cache: 'no-cache',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token
+    }
+  })
+
+  const data = await response.json()
+  return data
+}
+
+async function fetchCustomerReview(token: string) {
+  const response = await fetch(process.env.API_URL + '/client/review/customer-reviews', {
+    method: 'POST',
+    cache: 'no-cache',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token
+    }
+  })
+
   const data = await response.json()
   return data
 }
 
 async function loginCustomer(customer: CustomerLogin | {}) {
-  console.log(customer)
   const response = await fetch(process.env.API_URL + '/client/customer/login', {
     method: 'POST',
     cache: 'no-cache',
@@ -37,7 +64,7 @@ async function loginCustomer(customer: CustomerLogin | {}) {
     },
     body: JSON.stringify({customer}),
   })
-  
+
   const data = await response.json()
   return data
 }
@@ -52,7 +79,7 @@ async function signupCustomer(customer: Customer | {}) {
     },
     body: JSON.stringify({customer}),
   })
-  
+
   const data = await response.json()
   return data
 }
@@ -60,6 +87,8 @@ async function signupCustomer(customer: Customer | {}) {
 export {
   fetchCustomerName,
   fetchCustomerInfo,
+  fetchCustomerOrder,
+  fetchCustomerReview,
   loginCustomer,
   signupCustomer
 }
