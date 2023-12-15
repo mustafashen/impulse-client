@@ -1,5 +1,5 @@
 import InfoCard from "@/components/Customer/InfoCard"
-import { fetchCustomerInfo, fetchCustomerOrder, fetchCustomerReview } from "@/lib/api/customer/customer"
+import { fetchCustomerInfo, fetchCustomerOrder } from "@/lib/api/customer/customer"
 import { getCookie } from "@/lib/cookies/cookieMethods"
 import { redirect } from 'next/navigation'
 import {
@@ -10,42 +10,34 @@ import {
 } from "@/components/ui/tabs"
 import OrdersCard from "@/components/Customer/OrdersCard"
 import ReviewsCard from "@/components/Customer/ReviewsCard"
+import { fetchCustomerReviews } from "@/lib/api/review/review"
 
 export default async function page() {
   const accessToken = getCookie('customer_access_token')
   if (!accessToken) {
     redirect('/access')
   }
-  
-  async function getCustomerInfo() {
-    'use server'
-    if (accessToken) {
-      const {customer} = await fetchCustomerInfo(accessToken.value)
-      return customer
-    } else {
-      return {Error: "Customer info fetch failed."}
-    }
-  }
+  const {customer} = await fetchCustomerInfo(accessToken.value)
 
-  async function getCustomerReview() {
+  async function getCustomerReview(id: string) {
     'use server'
     if (accessToken) {
-      const {customer} = await fetchCustomerReview(accessToken.value)
-      return customer
+      const reviews = await fetchCustomerReviews(id)
+      return reviews
     } else {
       return {Error: "Customer review fetch failed."}
     }
   }
 
-  async function getCustomerOrder() {
-    'use server'
-    if (accessToken) {
-      const {customer} = await fetchCustomerOrder(accessToken.value)
-      return customer
-    } else {
-      return {Error: "Customer order fetch failed."}
-    }
-  }
+  // async function getCustomerOrder(id: string) {
+  //   'use server'
+  //   if (accessToken) {
+  //     const {customer} = await fetchCustomerOrder(id, accessToken.value)
+  //     return customer
+  //   } else {
+  //     return {Error: "Customer order fetch failed."}
+  //   }
+  // }
 
 
   // connect carts and wishlist to db
@@ -61,13 +53,13 @@ export default async function page() {
           <TabsTrigger value="reviews">Reviews</TabsTrigger>
         </TabsList>
         <TabsContent value="account">
-          <InfoCard getCustomerInfo={getCustomerInfo}/>
+          <InfoCard customer={customer}/>
         </TabsContent>
         {/* <TabsContent value="orders">
-          <OrdersCard getCustomerOrder={getCustomerOrder}/>
+          <OrdersCard getCustomerOrder={getCustomerOrder} customer={customer}/>
         </TabsContent> */}
         <TabsContent value="reviews">
-          <ReviewsCard getCustomerReview={getCustomerReview}/>
+          <ReviewsCard getCustomerReview={getCustomerReview} customer={customer}/>
         </TabsContent>
       </Tabs>
     </div>

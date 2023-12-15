@@ -27,20 +27,6 @@ async function fetchCustomerInfo(token: string) {
   return data
 }
 
-async function fetchCustomerOrder(token: string) {
-  const response = await fetch(process.env.API_URL + '/client/order/customer', {
-    method: 'POST',
-    cache: 'no-cache',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token
-    }
-  })
-
-  const data = await response.json()
-  return data
-}
-
 async function fetchCustomerReview(token: string) {
   const response = await fetch(process.env.API_URL + '/client/review/customer-reviews', {
     method: 'POST',
@@ -87,7 +73,6 @@ async function signupCustomer(customer: Customer | {}) {
 export {
   fetchCustomerName,
   fetchCustomerInfo,
-  fetchCustomerOrder,
   fetchCustomerReview,
   loginCustomer,
   signupCustomer

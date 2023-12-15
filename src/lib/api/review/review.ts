@@ -2,10 +2,8 @@
 async function fetchProductReviews(product_id: string) {
   const response = await fetch(process.env.API_URL + '/client/review/product-reviews', {
     method: 'POST',
-    //@ts-ignore
     headers: {
       'Content-Type': 'application/json',
-      'API-Key': process.env.DATA_API_KEY,
     },
     body: JSON.stringify({review: {product_id}}),
   })
@@ -13,6 +11,21 @@ async function fetchProductReviews(product_id: string) {
   return data
 }
 
+async function fetchCustomerReviews(id: string) {
+  const response = await fetch(process.env.API_URL + '/client/review/customer-reviews', {
+    method: 'POST',
+    cache: 'no-cache',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({review: {customer_id: id}})
+  })
+
+  const data = await response.json()
+  return data
+}
+
 export {
-  fetchProductReviews
+  fetchProductReviews,
+  fetchCustomerReviews
 }

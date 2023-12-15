@@ -1,12 +1,12 @@
 'use client'
 import { useEffect, useState } from "react"
 
-export default function OrdersCard({getCustomerOrder}: {getCustomerOrder: () => any}) {
+export default function OrdersCard({getCustomerOrder, customer}: {getCustomerOrder: (id: string) => any, customer: Customer}) {
   const [order, setOrder] = useState<any>({})
   useEffect(() => {
     const loadOrder = async () => {
-      const order = await getCustomerOrder()
-      console.log('order')
+      const order = await getCustomerOrder(customer.id)
+      console.log(order)
       setOrder(order)
     }
     loadOrder()
