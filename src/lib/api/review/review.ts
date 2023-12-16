@@ -1,7 +1,11 @@
+'use server'
+
+import { getCookie } from "@/lib/cookies/cookieMethods"
 
 async function fetchProductReviews(product_id: string) {
   const response = await fetch(process.env.API_URL + '/client/review/product-reviews', {
     method: 'POST',
+    cache: 'no-cache',
     headers: {
       'Content-Type': 'application/json',
     },
@@ -25,7 +29,32 @@ async function fetchCustomerReviews(id: string) {
   return data
 }
 
+async function createReview(review: Review) {
+  try {
+    const token = getCookie('customer_access_token')?.value
+    console.log(token)
+    if (!token) throw "No customer access token"
+
+  const response = await fetch(process.env.API_URL + '/client/review/create', {
+    method: 'POST',
+    cache: 'no-cache',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token
+    },
+    body: JSON.stringify({review})
+  })
+
+  const data = await response.json()
+  return data
+
+  } catch (error: any) {
+    return {Error: error}
+  }
+}
+
 export {
   fetchProductReviews,
-  fetchCustomerReviews
+  fetchCustomerReviews,
+  createReview
 }

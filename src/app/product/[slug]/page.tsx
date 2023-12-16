@@ -34,7 +34,7 @@ export default async function page(props: {searchParams:{name: string, id: strin
       <div>
         <h1>Reviews</h1>
         <div>
-          <ProductReviews reviews={reviewData}/>
+          <ProductReviews reviews={reviewData} product_id={id} />
         </div>
       </div>
     </div>
