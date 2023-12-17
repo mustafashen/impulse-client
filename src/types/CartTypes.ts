@@ -1,4 +1,4 @@
-type ActionType = 'ADD' | 'DELETE' | 'QTY_INC' | 'QTY_DEC'
+type ActionType = 'ADD' | 'DELETE' | 'QTY_INC' | 'QTY_DEC' | 'SET'
 
 type ItemType = {
     id: string,
