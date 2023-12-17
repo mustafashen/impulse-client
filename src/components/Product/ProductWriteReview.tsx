@@ -4,17 +4,18 @@ import { Textarea } from '../ui/textarea'
 import { Button } from '../ui/button'
 import { ChangeEvent, useState } from 'react'
 import { createReview } from '@/lib/api/review/review'
+import ProductRate from './Rating'
+import Rating from './Rating'
 
 export default function ProductWriteReview({product_id}: {product_id: string}) {
   const [comment, setComment] = useState('')
-  const [rating, setRating] = useState<1|2|3|4|5>(5)
+  const [rating, setRating] = useState(1)
 
   function handleSend(review: Review) {
     createReview(review)
   }
 
   function handleClick() {
-    console.log('clicked')
     handleSend(
       {
         rating,
@@ -22,6 +23,10 @@ export default function ProductWriteReview({product_id}: {product_id: string}) {
         product_id
       }
     )
+  }
+  
+  function handleRating(rate: number) {
+    setRating(rate)
   }
 
   function handleTextChange(e: ChangeEvent) {
@@ -37,6 +42,7 @@ export default function ProductWriteReview({product_id}: {product_id: string}) {
         </CardTitle>
       </CardHeader>
       <CardContent>
+        <Rating initialState={1} rateOutOf={5} handleRating={handleRating}></Rating>
         <Textarea onChange={handleTextChange}></Textarea>
         <Button onClick={handleClick}>Send</Button>
       </CardContent>
