@@ -1,8 +1,6 @@
 'use client'
 import { StarFilledIcon, StarIcon } from "@radix-ui/react-icons"
 import { useEffect, useState } from "react"
-import { Button } from "../ui/button"
-
 
 export default function Rating({initialState, rateOutOf, handleRating}: {initialState: number, rateOutOf: number, handleRating: (rate: number) => void}) {
   
@@ -37,7 +35,7 @@ export default function Rating({initialState, rateOutOf, handleRating}: {initial
           return <button 
                     key={`rate_input_${idx}`} 
                     onClick={() => handleChangeRate(idx + 1)}
-                    className="hover:-translate-y-1 ">
+                    className="hover:-translate-y-1 transition-transform">
             {
               r === 1 ? <StarFilledIcon /> : <StarIcon />
             }
