@@ -1,18 +1,26 @@
 'use client'
-import { createContext, useContext, useReducer } from "react"
+import { getCookie, setCookie } from "@/lib/cookies/cookieMethods"
+import { createContext, useContext, useEffect, useReducer } from "react"
 
-function wishlistReducer(state: ItemType[], action: {wishlistItem: ItemType}) {
-    console.log('wishlistReducer')
+function wishlistReducer(state: ItemType[], action: {type: 'TOGGLE' | 'SET', wishlistItem?: ItemType, wishlistItems?: ItemsType}) {
     let stateCopy = [...state]
-    let {wishlistItem} = action
-    const {id} = wishlistItem
+    let {wishlistItem, wishlistItems} = action
+    const id = wishlistItem ? wishlistItem.id : undefined
 
-    const existingIndex = stateCopy.findIndex((el: ItemType) => el.id === id)
+    if (action.type === 'TOGGLE' && wishlistItem) {
+        const existingIndex = stateCopy.findIndex((el: ItemType) => el.id === id)
 
-    if (existingIndex === -1) {
-        stateCopy = [...stateCopy, wishlistItem]
-    } else {
-        stateCopy.splice(existingIndex, 1)
+        if (existingIndex === -1) {
+            stateCopy = [...stateCopy, wishlistItem]
+        } else {
+            stateCopy.splice(existingIndex, 1)
+        }
+
+        const state_str = JSON.stringify(stateCopy)
+        setCookie('customer_wishlist', state_str) 
+        
+    } else if (action.type === 'SET' && wishlistItems) {
+        stateCopy = wishlistItems
     }
 
     return stateCopy
@@ -24,6 +32,17 @@ export function WishlistContextProvider({children} : {children: React.ReactEleme
     
 
   const [wishlistItems, dispatchWishlistItems] = useReducer(wishlistReducer, [])
+
+    useEffect(() => {
+        async function setCachedCart() {
+            const str_state = await getCookie('customer_wishlist')
+            if (str_state && str_state.value.length > 0) {
+                const wishlist_state = JSON.parse(str_state.value) 
+                dispatchWishlistItems({ type: 'SET', wishlistItems: wishlist_state})
+            }
+        }
+        setCachedCart()
+    },[])
 
 
     const WishlistContextStore: WishlistContextType = {

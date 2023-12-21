@@ -23,12 +23,11 @@ export default function ProductCard({product}: {product: Product}) {
   const {dispatchWishlistItems}: any = useWishlistContext()
 
   function handleAddCart() {
-    console.log(images)
     dispatchCartItems({type: 'ADD', cartItem: {id, name, price, images}})
   }
   
   function handleAddFavorites() {
-    dispatchWishlistItems({wishlistItem: {id, name, price, images}})
+    dispatchWishlistItems({type: 'TOGGLE', wishlistItem: {id, name, price, images}})
   }
 
   return (

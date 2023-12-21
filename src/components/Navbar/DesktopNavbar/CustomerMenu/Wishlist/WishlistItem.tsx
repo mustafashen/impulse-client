@@ -2,7 +2,6 @@ import React from 'react'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import Image from 'next/image'
 import product_placeholder from "../../../../../../public/images/product_placeholder.jpg"
-import { SheetFooter } from '@/components/ui/sheet'
 import { Button } from '@/components/ui/button'
 import { Cross1Icon, HeartIcon } from '@radix-ui/react-icons'
 import { useWishlistContext } from '@/contexts/WishlistContext'
@@ -11,7 +10,7 @@ export default function WishlistItem({item}: {item: ItemType}) {
   const {dispatchWishlistItems}: any = useWishlistContext()
   function handleWishlistToggle() {
       //@ts-ignore
-      dispatchWishlistItems({wishlistItem: item})
+      dispatchWishlistItems({type: 'TOGGLE', wishlistItem: item})
   }
 
   return (
