@@ -5,7 +5,6 @@ import {
 } from "@/components/ui/tabs"
 import SignupTab from "./SignupTab"
 import LoginTab from "./LoginTab"
-import { redirect } from 'next/navigation'
 
 export default function AccessCard() {
 

@@ -13,7 +13,6 @@ export default function CartItem({item}: {item: ItemType}) {
   const {dispatchCartItems}: any = useCartContext()
 
   function handleCartItemInc(item: ItemType) {
-    console.log(item)
     dispatchCartItems({type: 'QTY_INC', cartItem: {id: item.id}})
   }
 

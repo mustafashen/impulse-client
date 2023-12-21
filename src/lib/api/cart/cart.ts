@@ -3,8 +3,7 @@ import { getCookie } from "@/lib/cookies/cookieMethods"
 
 async function listCartLines(cart_id: string) {
 
-  const token = getCookie('customer_access_token')?.value
-  console.log(token)
+  const token = (await getCookie('customer_access_token'))?.value
   if (!token) throw "No customer access token"
 
   const response = await fetch(process.env.API_URL + '/client/cart/list', {
@@ -25,8 +24,7 @@ async function listCartLines(cart_id: string) {
 
 async function createCartLine({cart_id, product_id, quantity}: {cart_id: string, product_id: string, quantity: number}) {
 
-  const token = getCookie('customer_access_token')?.value
-  console.log(token)
+  const token = (await getCookie('customer_access_token'))?.value
   if (!token) throw "No customer access token"
 
   const response = await fetch(process.env.API_URL + '/client/cart/line-create', {
@@ -51,8 +49,7 @@ async function createCartLine({cart_id, product_id, quantity}: {cart_id: string,
 
 async function deleteCartLine({id, cart_id}: {id: string, cart_id: string}) {
 
-  const token = getCookie('customer_access_token')?.value
-  console.log(token)
+  const token = (await getCookie('customer_access_token'))?.value
   if (!token) throw "No customer access token"
 
   const response = await fetch(process.env.API_URL + '/client/cart/line-delete', {
@@ -74,10 +71,9 @@ async function deleteCartLine({id, cart_id}: {id: string, cart_id: string}) {
   return data
 }
 
-async function updateCartLine({id, cart_id, updates}: {id: string, cart_id: string, updates: {pquantity: number}}) {
+async function updateCartLine({id, cart_id, updates}: {id: string, cart_id: string, updates: {quantity: number}}) {
 
-  const token = getCookie('customer_access_token')?.value
-  console.log(token)
+  const token = (await getCookie('customer_access_token'))?.value
   if (!token) throw "No customer access token"
 
   const response = await fetch(process.env.API_URL + '/client/cart/line-update', {

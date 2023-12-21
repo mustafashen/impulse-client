@@ -6,7 +6,6 @@ export default function OrdersCard({getCustomerOrder, customer}: {getCustomerOrd
   useEffect(() => {
     const loadOrder = async () => {
       const order = await getCustomerOrder(customer.id)
-      console.log(order)
       setOrder(order)
     }
     loadOrder()

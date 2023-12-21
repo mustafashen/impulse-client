@@ -1,5 +1,5 @@
 
 type WishlistContextType = {
   wishlistItems: ItemsType,
-  dispatchWishlistItems?: (action: {wishlistItem: ItemType}) => void
+  dispatchWishlistItems?: (action: {type: 'TOGGLE' | 'SET', wishlistItem: ItemType}) => void
 }

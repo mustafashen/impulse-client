@@ -31,8 +31,7 @@ async function fetchCustomerReviews(id: string) {
 
 async function createReview(review: Review) {
   try {
-    const token = getCookie('customer_access_token')?.value
-    console.log(token)
+    const token = (await getCookie('customer_access_token'))?.value
     if (!token) throw "No customer access token"
 
   const response = await fetch(process.env.API_URL + '/client/review/create', {

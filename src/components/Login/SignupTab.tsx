@@ -22,7 +22,6 @@ export default function SignupTab() {
 
   const handleSignup = async (state: SignupState) => {
     const res = await signupCustomer(state)
-    console.log(res.status)
   }
 
   const handleChange = (event: any) => {

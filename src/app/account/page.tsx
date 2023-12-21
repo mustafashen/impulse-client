@@ -1,5 +1,5 @@
 import InfoCard from "@/components/Customer/InfoCard"
-import { fetchCustomerInfo, fetchCustomerOrder } from "@/lib/api/customer/customer"
+import { fetchCustomerInfo } from "@/lib/api/customer/customer"
 import { getCookie } from "@/lib/cookies/cookieMethods"
 import { redirect } from 'next/navigation'
 import {
@@ -13,11 +13,12 @@ import ReviewsCard from "@/components/Customer/ReviewsCard"
 import { fetchCustomerReviews } from "@/lib/api/review/review"
 
 export default async function page() {
-  const accessToken = getCookie('customer_access_token')
+  const accessToken = await getCookie('customer_access_token')
   if (!accessToken) {
     redirect('/access')
   }
-  const {customer} = await fetchCustomerInfo(accessToken.value)
+
+  const {customer} = accessToken.value ?  await fetchCustomerInfo(accessToken.value) : {customer: {}}
 
   async function getCustomerReview(id: string) {
     'use server'

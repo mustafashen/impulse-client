@@ -14,17 +14,21 @@ async function fetchCustomerName(customer_id: string) {
 }
 
 async function fetchCustomerInfo(token: string) {
-  const response = await fetch(process.env.API_URL + '/client/customer/info', {
-    method: 'POST',
-    cache: 'no-cache',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token
-    }
-  })
-
-  const data = await response.json()
-  return data
+  try {
+    const response = await fetch(process.env.API_URL + '/client/customer/info', {
+      method: 'POST',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      }
+    })
+  
+    const data = await response.json()
+    return data
+  } catch (error) {
+    return {}
+  }
 }
 
 async function fetchCustomerReview(token: string) {
@@ -56,7 +60,6 @@ async function loginCustomer(customer: CustomerLogin | {}) {
 }
 
 async function signupCustomer(customer: Customer | {}) {
-  console.log(customer)
   const response = await fetch(process.env.API_URL + '/client/customer/signup', {
     method: 'POST',
     cache: 'no-cache',

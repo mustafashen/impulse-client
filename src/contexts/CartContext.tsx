@@ -13,7 +13,6 @@ const delCartItem = (state: ItemsType, id: string) => {
             return
         }
     })
-    console.log(state)
 }
 const qtyIncCartItem = (state: ItemsType, id: string) => {
     state.map((item: ItemType, idx: number) => {
@@ -109,7 +108,6 @@ export function CartContextProvider({children} : {children: React.ReactElement})
             const str_state = await getCookie('customer_cart')
             if (str_state && str_state.value.length > 0) {
                 const cart_state = JSON.parse(str_state.value) 
-                console.log('cart state:', cart_state)
                 dispatchCartItems({ type: 'SET', cartItems: cart_state})
             }
         }
