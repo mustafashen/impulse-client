@@ -7,12 +7,13 @@ import { createReview } from '@/lib/api/review/review'
 import ProductRate from './Rating'
 import Rating from './Rating'
 
-export default function ProductWriteReview({product_id}: {product_id: string}) {
+export default function ProductWriteReview({product_id, addProductReview}: {product_id: string, addProductReview: (review: Review) => void}) {
   const [comment, setComment] = useState('')
   const [rating, setRating] = useState(1)
 
   function handleSend(review: Review) {
     createReview(review)
+    addProductReview({...review, customer_id: 'state_bound_review'})
   }
 
   function handleClick() {
