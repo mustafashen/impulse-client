@@ -75,13 +75,13 @@ async function deleteReview(id: string) {
   }
 }
 
-async function updateReview(id: string, updates: Review) {
+async function updateReview(id: string, updates: {comment: string, rating: number}) {
   try {
     const token = (await getCookie('customer_access_token'))?.value
     if (!token) throw "No customer access token"
 
     const response = await fetch(process.env.API_URL + '/client/review/update', {
-      method: 'DELETE',
+      method: 'PUT',
       cache: 'no-cache',
       headers: {
         'Content-Type': 'application/json',

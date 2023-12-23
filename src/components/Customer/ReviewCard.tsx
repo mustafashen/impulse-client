@@ -4,16 +4,21 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../ui/card
 import { Cross1Icon, Pencil1Icon, StarFilledIcon } from '@radix-ui/react-icons'
 import { Button } from '../ui/button'
 import { deleteReview, updateReview } from '@/lib/api/review/review'
+import { Dialog, DialogTrigger } from '@radix-ui/react-dialog'
+import ReviewUpdate from './ReviewUpdate'
 
-export default function ReviewCard({review, deleteStateReview}: {review: Review, deleteStateReview: (id: string) => void}) {
+export default function ReviewCard({review, deleteStateReview, updateStateReview}: {review: Review, deleteStateReview: (id: string) => void, updateStateReview: (id: string, updates: {comment: string, rating: number}) => void}) {
 
   const handleDelete = (id: string) => {
     deleteReview(id)
     deleteStateReview(id)
   }
 
-  const handleUpdate = (id: string, updates: Review) => {
-    updateReview(id, updates)
+  const handleUpdate = (updates: {comment: string, rating: number}) => {
+    if (review.id) {
+      updateReview(review.id, updates)
+      updateStateReview(review.id, updates)
+    }
   }
   
   return (
@@ -34,10 +39,15 @@ export default function ReviewCard({review, deleteStateReview}: {review: Review,
         <Cross1Icon/>
         Delete
       </Button>
-      <Button>
-        <Pencil1Icon/>
-        Update
-      </Button>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button>
+            <Pencil1Icon/>
+            Update
+          </Button>
+        </DialogTrigger>
+        <ReviewUpdate handleUpdate={handleUpdate} currentComment={review.comment} currentRating={review.rating}/>
+      </Dialog>
     </CardFooter>
   </Card>)
 }
