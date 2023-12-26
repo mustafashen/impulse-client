@@ -1,9 +1,15 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
+import { Button } from '../ui/button'
+import { logoutCustomer } from '@/lib/api/customer/customer'
+import { deleteCookie } from '@/lib/cookies/cookieMethods'
 
 export default function InfoCard({customer}: {customer: any}) {
 
+  const handleLogout = async () => {
+    logoutCustomer()
+  }
 
   return (
     <Card>
@@ -26,6 +32,7 @@ export default function InfoCard({customer}: {customer: any}) {
           <div>Loading...</div>
         }
       </CardContent>
+      <Button onClick={handleLogout}>Logout</Button>
     </Card>
   )
 }

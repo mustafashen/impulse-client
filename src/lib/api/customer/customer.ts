@@ -80,18 +80,22 @@ async function signupCustomer(customer: Customer | {}) {
 
 }
 
-async function logoutCustomer(customer: Customer | {}) {
+async function logoutCustomer() {
+
+  const token = (await getCookie('customer_access_token'))?.value
+  if (!token) throw "No customer access token"
+
   const response = await fetch(process.env.API_URL + '/client/customer/logout', {
     method: 'DELETE',
     cache: 'no-cache',
     headers: {
-      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
     },
-    body: JSON.stringify({customer}),
   })
 
   const data = await response.json()
   if (data.Success) {
+    deleteCookie('customer_access_token')  
     redirect('/account')
   }
 }
