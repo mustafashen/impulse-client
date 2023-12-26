@@ -117,8 +117,44 @@ async function deleteCustomer(password: string) {
 
     const data = await response.json()
 
-    if (data.Success) deleteCookie('customer_access_token')
-    redirect('/')
+    if (data.Success) {
+      await deleteCookie('customer_access_token')
+      redirect('/')
+    }
+
+  } catch (error: any) {
+    return {Error: error}
+  }
+}
+
+async function updateCustomer({currentPassword, newPassword}: {currentPassword: string, newPassword: string}) {
+  try {
+    const token = (await getCookie('customer_access_token'))?.value
+    if (!token) throw "No customer access token"
+
+    const response = await fetch(process.env.API_URL + '/client/customer/delete', {
+      method: 'PUT',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({
+        customer: {
+          password: currentPassword,
+          updates: {
+            password: newPassword
+          }
+        }
+      }),
+    })
+
+    const data = await response.json()
+
+    if (data.Success) {
+      await deleteCookie('customer_access_token')
+      redirect('/')
+    }
 
   } catch (error: any) {
     return {Error: error}
@@ -132,5 +168,6 @@ export {
   loginCustomer,
   signupCustomer,
   logoutCustomer,
-  deleteCustomer
+  deleteCustomer,
+  updateCustomer
 }
