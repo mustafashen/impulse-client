@@ -1,4 +1,8 @@
 'use server'
+
+import { deleteCookie, getCookie } from "@/lib/cookies/cookieMethods"
+import { redirect } from "next/navigation"
+
 async function fetchCustomerName(customer_id: string) {
   const response = await fetch(process.env.API_URL + '/client/customer/name', {
     method: 'POST',
@@ -70,7 +74,51 @@ async function signupCustomer(customer: Customer | {}) {
   })
 
   const data = await response.json()
-  return data
+  if (data.Success) {
+    redirect('/account')
+  }
+
+}
+
+async function logoutCustomer(customer: Customer | {}) {
+  const response = await fetch(process.env.API_URL + '/client/customer/logout', {
+    method: 'DELETE',
+    cache: 'no-cache',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({customer}),
+  })
+
+  const data = await response.json()
+  if (data.Success) {
+    redirect('/account')
+  }
+}
+
+async function deleteCustomer(password: string) {
+  try {
+    const token = (await getCookie('customer_access_token'))?.value
+    if (!token) throw "No customer access token"
+
+    const response = await fetch(process.env.API_URL + '/client/customer/delete', {
+      method: 'DELETE',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({password}),
+    })
+
+    const data = await response.json()
+
+    if (data.Success) deleteCookie('customer_access_token')
+    redirect('/')
+
+  } catch (error: any) {
+    return {Error: error}
+  }
 }
 
 export {
@@ -78,5 +126,7 @@ export {
   fetchCustomerInfo,
   fetchCustomerReview,
   loginCustomer,
-  signupCustomer
+  signupCustomer,
+  logoutCustomer,
+  deleteCustomer
 }

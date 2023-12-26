@@ -2,11 +2,8 @@
 import React, { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 
-export default function InfoCard({customer}: {customer: Customer}) {
-  const [info, setInfo] = useState<any>({})
-  useEffect(() => {
-    setInfo(customer)
-  },[])
+export default function InfoCard({customer}: {customer: any}) {
+
 
   return (
     <Card>
@@ -17,14 +14,14 @@ export default function InfoCard({customer}: {customer: Customer}) {
       </CardHeader>
       <CardContent>
         {
-          Object.values(info).length > 0 ? 
+          Object.keys(customer).length > 0 ? 
           <div>
-            <p>{info.name}</p>
-            <p>{info.last_name}</p>
-            <p>{info.gender}</p>
-            <p>{info.email}</p>
-            <p>{info.phone}</p>
-            <p>{`${info.is_active}`}</p>
+            <p>{customer.name}</p>
+            <p>{customer.last_name}</p>
+            <p>{customer.gender}</p>
+            <p>{customer.email}</p>
+            <p>{customer.phone}</p>
+            <p>{`${customer.is_active}`}</p>
           </div> :
           <div>Loading...</div>
         }

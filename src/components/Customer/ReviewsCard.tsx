@@ -1,16 +1,20 @@
 'use client'
 import React, { ReactElement, useEffect, useState } from 'react'
 import ReviewCard from './ReviewCard'
+import { fetchCustomerReviews } from '@/lib/api/review/review'
 
-export default function ReviewsCard({getCustomerReview, customer}: {getCustomerReview: (id: string) => any, customer: Customer}) {
+export default function ReviewsCard({customer}: {customer: Customer | {}}) {
   const [reviews, setReviews] = useState<any>([])
 
   useEffect(() => {
-    const loadReview = async () => {
-      const review = await getCustomerReview(customer.id)
-      setReviews(review)
+    async function getCustomerReview(id: string) {
+      const reviews = await fetchCustomerReviews(id)
+      return reviews
     }
-    loadReview()
+    if (Object.keys(customer).includes('id')) {
+      //@ts-ignore
+      getCustomerReview(customer.id)
+    }
   },[])
   
   const deleteStateReview = (id: string) => {

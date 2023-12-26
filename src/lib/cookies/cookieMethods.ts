@@ -12,7 +12,13 @@ async function getCookie(name: string) {
   return token
 }
 
+async function deleteCookie(name: string) {
+  const cookieStore = cookies()
+  cookieStore.delete(name)
+}
+
 export {
   setCookie,
   getCookie,
+  deleteCookie
 }
