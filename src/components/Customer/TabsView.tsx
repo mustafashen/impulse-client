@@ -14,6 +14,7 @@ import ReviewsCard from "@/components/Customer/ReviewsCard"
 import { fetchCustomerReviews } from "@/lib/api/review/review"
 import SettingsCard from "@/components/Customer/SettingsCard"
 import { useEffect, useState } from "react"
+import AddressCard from "./AddressCard"
 
 export default function TabsView({accessToken}: {accessToken: string}) {
   const [customer, setCustomer] = useState({})
@@ -46,7 +47,7 @@ export default function TabsView({accessToken}: {accessToken: string}) {
       <ReviewsCard customer={customer}/>
     </TabsContent>
     <TabsContent value="address">
-      <></>
+      <AddressCard/>
     </TabsContent>
     <TabsContent value="settings">
       <SettingsCard/>
