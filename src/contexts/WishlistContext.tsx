@@ -36,7 +36,7 @@ export function WishlistContextProvider({children} : {children: React.ReactEleme
     async function setWishlist() {
         const wishlistLines = await listWishlistLines()
         Promise.all(
-            wishlistLines.map(async (wishlistLine: WishlistItem) => {
+            wishlistLines.map(async (wishlistLine: WishlistLine) => {
                 const [product, images] = await Promise.all([
                     fetchProductsById(wishlistLine.product_id), 
                     getProductImages({id: wishlistLine.product_id})])

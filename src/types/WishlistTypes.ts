@@ -19,6 +19,6 @@ type WishlistItem = {
 type WishlistItems = WishlistItem[]
 
 type WishlistContextType = {
-  wishlistLines: WishlistLines,
-  dispatchWishlistLines?: (action: {type: 'TOGGLE' | 'SET', wishlistLine?: WishlistLine, wishlistLines?: WishlistLines}) => void
+  wishlistItems: WishlistItems,
+  dispatchWishlistItems?: (action: {type: 'TOGGLE' | 'SET', wishlistLine?: WishlistItem, wishlistLines?: WishlistItems}) => void
 }
