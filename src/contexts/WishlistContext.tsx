@@ -1,24 +1,24 @@
 'use client'
+import { fetchProductsById } from "@/lib/api/product/product"
+import { fetchWishlistLine, listWishlistLines, toggleWishlistLine } from "@/lib/api/wishlist/wishlist"
 import { getCookie, setCookie } from "@/lib/cookies/cookieMethods"
+import { getProductImages } from "@/lib/s3/fetchProductImages"
 import { createContext, useContext, useEffect, useReducer } from "react"
 
-function wishlistReducer(state: ItemType[], action: {type: 'TOGGLE' | 'SET', wishlistItem?: ItemType, wishlistItems?: ItemsType}) {
+function wishlistReducer(state: WishlistItem[], action: {type: 'TOGGLE' | 'SET', wishlistItem?: WishlistItem, wishlistItems?: WishlistItems}) {
     let stateCopy = [...state]
     let {wishlistItem, wishlistItems} = action
     const id = wishlistItem ? wishlistItem.id : undefined
 
     if (action.type === 'TOGGLE' && wishlistItem) {
-        const existingIndex = stateCopy.findIndex((el: ItemType) => el.id === id)
+        const existingIndex = stateCopy.findIndex((el: WishlistItem) => el.id === id)
 
         if (existingIndex === -1) {
             stateCopy = [...stateCopy, wishlistItem]
         } else {
             stateCopy.splice(existingIndex, 1)
         }
-
-        const state_str = JSON.stringify(stateCopy)
-        setCookie('customer_wishlist', state_str) 
-        
+        toggleWishlistLine({product_id: wishlistItem.id})
     } else if (action.type === 'SET' && wishlistItems) {
         stateCopy = wishlistItems
     }
@@ -33,15 +33,23 @@ export function WishlistContextProvider({children} : {children: React.ReactEleme
 
   const [wishlistItems, dispatchWishlistItems] = useReducer(wishlistReducer, [])
 
+    async function setWishlist() {
+        const wishlistLines = await listWishlistLines()
+        Promise.all(
+            wishlistLines.map(async (wishlistLine: WishlistItem) => {
+                const [product, images] = await Promise.all([
+                    fetchProductsById(wishlistLine.product_id), 
+                    getProductImages({id: wishlistLine.product_id})])
+                    
+                return {...product[0], images}
+            })
+        ).then(result => {
+            dispatchWishlistItems({type: 'SET', wishlistItems: result})
+        })
+    }
+
     useEffect(() => {
-        async function setCachedCart() {
-            const str_state = await getCookie('customer_wishlist')
-            if (str_state && str_state.value.length > 0) {
-                const wishlist_state = JSON.parse(str_state.value) 
-                dispatchWishlistItems({ type: 'SET', wishlistItems: wishlist_state})
-            }
-        }
-        setCachedCart()
+        setWishlist()
     },[])
 
 

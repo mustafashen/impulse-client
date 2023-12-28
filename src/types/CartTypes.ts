@@ -1,17 +1,9 @@
 type ActionType = 'ADD' | 'DELETE' | 'QTY_INC' | 'QTY_DEC' | 'SET'
 
-type ItemType = {
-    id: string,
-    name: string,
-    price: string,
-    quantity: number,
-    description: string,
-    images: string[],
-}
-
-type ItemsType = ItemType[]
+type CartItem = {}
+type CartItems = CartItem[]
 
 type CartContextType = {
-    cartItems: ItemsType
-    dispatchCartItems?: (action: {type: ActionType, cartItem: ItemType}) => void
+    cartItems: CartItems
+    dispatchCartItems?: (action: {type: ActionType, cartItem: CartItem}) => void
 }
