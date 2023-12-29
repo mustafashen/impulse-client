@@ -23,7 +23,7 @@ export default function Cart() {
         {
           cart?.cartItems.map((item => {
             return (
-              <CartItem item={item} key={item.id}/>
+              <CartItem item={item} key={item.cart_line_id}/>
             )
           }))
         }

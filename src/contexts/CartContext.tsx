@@ -1,32 +1,39 @@
 'use client'
+import { createCartLine, deleteCartLine, listCartLines, updateCartLine } from "@/lib/api/cart/cart"
+import { fetchProductsById } from "@/lib/api/product/product"
 import { getCookie, setCookie } from "@/lib/cookies/cookieMethods"
+import { getProductImages } from "@/lib/s3/fetchProductImages"
 import { createContext, useContext, useEffect, useReducer } from "react"
 
-const addCartItem = (state: ItemsType, cartItem: ItemType) => {
+const addCartItem = (state: CartItems, cartItem: CartItem) => {
     state = [...state, {...cartItem, quantity: 1}]
+    createCartLine({product_id: cartItem.id, quantity: 1})
     return state
 }
-const delCartItem = (state: ItemsType, id: string) => {
-    state.map((item: ItemType, idx: number) => {
+const delCartItem = (state: CartItems, id: string) => {
+    state.map((item: CartItem, idx: number) => {
         if (item.id === id) {
             state.splice(idx, 1)
+            deleteCartLine({id: item.cart_line_id})
             return
         }
     })
 }
-const qtyIncCartItem = (state: ItemsType, id: string) => {
-    state.map((item: ItemType, idx: number) => {
+const qtyIncCartItem = (state: CartItems, id: string) => {
+    state.map((item: CartItem, idx: number) => {
         if (item.id === id) {
             ++item.quantity
+            updateCartLine({id: item.cart_line_id, updates: {quantity: item.quantity}})
             return
         }
     })
     return state
 }
-const qtyDecCartItem = (state: ItemsType, id: string) => {
-    state.map((item: ItemType, idx: number) => {
+const qtyDecCartItem = (state: CartItems, id: string) => {
+    state.map((item: CartItem, idx: number) => {
         if (item.id === id) {
             --item.quantity
+            updateCartLine({id: item.cart_line_id, updates: {quantity: item.quantity}})
             return
         }
     })
@@ -34,13 +41,13 @@ const qtyDecCartItem = (state: ItemsType, id: string) => {
 }
 
 
-function reduceCartItems(state: ItemsType, action: {type: ActionType, cartItem?: ItemType, cartItems?: ItemsType}) {
+function reduceCartItems(state: CartItems, action: {type: ActionType, cartItem?: CartItem, cartItems?: CartItems}) {
     let stateCopy = [...state]
     let {type, cartItem, cartItems} = action
     const id = cartItem ? cartItem.id : undefined
 
     if (type === 'ADD') {
-        stateCopy.map((item: ItemType) => {
+        stateCopy.map((item: CartItem) => {
             if (item.id === id) {
                 type = 'QTY_INC'
                 return
@@ -76,7 +83,7 @@ function reduceCartItems(state: ItemsType, action: {type: ActionType, cartItem?:
     }
 
     if (type === 'QTY_DEC') {
-        stateCopy.map((item: ItemType, idx: number) => {
+        stateCopy.map((item: CartItem, idx: number) => {
             if (item.id === id) {
                 if (item.quantity === 0) {
                     stateCopy.splice(idx, 1)
@@ -84,14 +91,6 @@ function reduceCartItems(state: ItemsType, action: {type: ActionType, cartItem?:
                 }
             }
         })
-    }
-
-    if (action.type === 'ADD' ||
-        action.type === 'DELETE' ||
-        action.type === 'QTY_INC' ||
-        action.type === 'QTY_DEC') {
-        const state_str = JSON.stringify(stateCopy)
-        setCookie('customer_cart', state_str) 
     }
 
     return stateCopy
@@ -103,15 +102,24 @@ export function CartContextProvider({children} : {children: React.ReactElement})
 
     const [cartItems, dispatchCartItems] = useReducer(reduceCartItems, [])
 
+    async function setCart() {
+        const cartLines = await listCartLines()
+        Promise.all(
+            cartLines.map(async (cartLine: CartLine) => {
+                const [product, images] = await Promise.all([
+                    fetchProductsById(cartLine.product_id), 
+                    getProductImages({id: cartLine.product_id})])
+                    
+                return {...product[0], images, quantity: cartLine.quantity, cart_line_id: cartLine.id}
+            })
+        ).then(result => {
+            dispatchCartItems({type: 'SET', cartItems: result})
+        })
+    }
+
     useEffect(() => {
-        async function setCachedCart() {
-            const str_state = await getCookie('customer_cart')
-            if (str_state && str_state.value.length > 0) {
-                const cart_state = JSON.parse(str_state.value) 
-                dispatchCartItems({ type: 'SET', cartItems: cart_state})
-            }
-        }
-        setCachedCart()
+
+        setCart()
     },[])
     
     const CartContextStore: CartContextType = {

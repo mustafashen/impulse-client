@@ -8,20 +8,21 @@ import { Button } from '@/components/ui/button'
 import { MinusIcon, PlusIcon } from '@radix-ui/react-icons'
 
 
-export default function CartItem({item}: {item: ItemType}) {
+export default function CartItem({item}: {item: CartItem}) {
 
   const {dispatchCartItems}: any = useCartContext()
 
-  function handleCartItemInc(item: ItemType) {
+  function handleCartItemInc(item: CartItem) {
     dispatchCartItems({type: 'QTY_INC', cartItem: {id: item.id}})
   }
 
-  function handleCartItemDec(item: ItemType) {
+  function handleCartItemDec(item: CartItem) {
+    console.log(item)
     dispatchCartItems({type: 'QTY_DEC', cartItem: {id: item.id}})
   }
-  
+  console.log(item)
   return (
-    <Card key={item.id} className='flex flex-row flex-nowrap w-full justify-between'>
+    <Card className='flex flex-row flex-nowrap w-full justify-between'>
       <div className='flex-grow'>
         <CardHeader>
           <CardTitle>

@@ -14,37 +14,10 @@ export default function WishlistItem({item}: {item: WishlistItem}) {
       dispatchWishlistItems({type: 'TOGGLE', wishlistItem: item})
   }
 
-  // const [wishlistItem, setWishlistItem] = useState<WishlistItem>({...item})
-  // useEffect(() => {
-  //   if (!item.name) {
-  //     fetchWishlistLine({id: item.id}).then(res => {
-  //       console.log(res)
-  //       setWishlistItem({
-  //         id: item.id,
-  //         name: res.name,
-  //         description: res.description,
-  //         price: res.price,
-  //         quantity: res.quantity,
-  //         images: []
-  //       })  
-  //     })
-  //     getProductImages({id: item.id}).then(images => {
-  //       setWishlistItem({
-  //         ...wishlistItem,
-  //         images: Array.isArray(images) ? images : []
-  //       })
-  //     })
-  //   } else {
-  //     setWishlistItem(item)
-  //   }
-  //   console.log(wishlistItem)
-  // },[])
-
   return (
     <>
     {
-      // Object.keys(wishlistItem).every((key: string) => ['id', 'name', 'description', 'price', 'quantity', 'images'].includes(key)) ?
-      (<Card key={item.id} className='relative flex flex-row flex-nowrap w-full justify-between'>
+      <Card key={item.id} className='relative flex flex-row flex-nowrap w-full justify-between'>
         <div className='flex-grow'>
           <CardHeader>
             <CardTitle>
@@ -68,9 +41,7 @@ export default function WishlistItem({item}: {item: WishlistItem}) {
             height={100}
           />
         </div>
-      </Card>)
-      //  :
-      // (<Card>Loading...</Card>)
+      </Card>
     }
     </>
   )

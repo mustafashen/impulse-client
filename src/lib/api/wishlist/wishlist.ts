@@ -8,7 +8,7 @@ async function listWishlistLines() {
     if (!token) throw "No customer access token"
   
     const wishlist_id = (await getCookie('customer_wishlist_id'))?.value
-    if (!wishlist_id) throw "No customer access token"
+    if (!wishlist_id) throw "No wishlist found"
   
     const response = await fetch(process.env.API_URL + '/client/wishlist/list', {
       method: 'POST',
@@ -29,6 +29,7 @@ async function listWishlistLines() {
     return data
   } catch (error) {
     console.log({Error: error})
+    return []
   }
 
 }
