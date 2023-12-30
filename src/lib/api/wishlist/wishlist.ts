@@ -35,48 +35,54 @@ async function listWishlistLines() {
 }
 
 async function fetchWishlistLine(wishlist_line: {id: string}) {
+  try {
+    const token = (await getCookie('customer_access_token'))?.value
+    if (!token) throw "No customer access token"
 
-  const token = (await getCookie('customer_access_token'))?.value
-  if (!token) throw "No customer access token"
-
-  const response = await fetch(process.env.API_URL + '/client/wishlist/line', {
-    method: 'POST',
-    cache: 'no-cache',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token
-    },
-    body: JSON.stringify({
-      wishlist_line
+    const response = await fetch(process.env.API_URL + '/client/wishlist/line', {
+      method: 'POST',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      },
+      body: JSON.stringify({
+        wishlist_line
+      })
     })
-  })
 
-  const data = await response.json()
-  console.log('LINE_WISHLIST', data)
-  return data
+    const data = await response.json()
+    console.log('LINE_WISHLIST', data)
+    return data
+  } catch (error) {
+    return {Error: error}
+  }
 }
 
 
 
 async function createWishlist() {
-
-  const token = (await getCookie('customer_access_token'))?.value
-  if (!token) {
-    redirect('/access')
-  }
-
-  const response = await fetch(process.env.API_URL + '/client/wishlist/create', {
-    method: 'POST',
-    cache: 'no-cache',
-    headers: {
-      'Authorization': token
+  try {
+    const token = (await getCookie('customer_access_token'))?.value
+    if (!token) {
+      redirect('/access')
     }
-  })
 
-  const data = await response.json()
-  console.log('CREATE_WISHLIST', data)
-  setCookie('customer_wishlist_id', data.wishlist_id)
-  return data
+    const response = await fetch(process.env.API_URL + '/client/wishlist/create', {
+      method: 'POST',
+      cache: 'no-cache',
+      headers: {
+        'Authorization': token
+      }
+    })
+
+    const data = await response.json()
+    console.log('CREATE_WISHLIST', data)
+    setCookie('customer_wishlist_id', data.wishlist_id)
+    return data
+  } catch (error) {
+    return {Error: error}
+  }
 }
 
 async function toggleWishlistLine({product_id}: {product_id: string}) {

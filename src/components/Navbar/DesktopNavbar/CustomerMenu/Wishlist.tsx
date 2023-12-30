@@ -3,8 +3,6 @@ import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger
 import { Heart } from 'react-feather'
 import { useWishlistContext } from '@/contexts/WishlistContext'
 import WishlistItem from './Wishlist/WishlistItem'
-import { Button } from '@/components/ui/button'
-import { HeartIcon } from '@radix-ui/react-icons'
 
 export default function Wishlist() {
   const wishlist = useWishlistContext()
@@ -23,7 +21,7 @@ export default function Wishlist() {
             {
               wishlist?.wishlistItems.map((item => {
                 return (
-                  <WishlistItem key={item.id} item={item}/>
+                  wishlist.wishlistItems ? <WishlistItem key={item.id} item={item}/> : <></>
                 )
               }))
             }

@@ -2,12 +2,10 @@ import React from 'react'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { ShoppingCart } from 'react-feather'
 import { useCartContext } from '@/contexts/CartContext'
-
 import CartItem from './Cart/CartItem'
 
 export default function Cart() {
   const cart = useCartContext()
-  
   return (
     <Sheet>
     <SheetTrigger>
@@ -23,7 +21,7 @@ export default function Cart() {
         {
           cart?.cartItems.map((item => {
             return (
-              <CartItem item={item} key={item.cart_line_id}/>
+              item.id ? <CartItem item={item} key={item.id}/> : <></>
             )
           }))
         }

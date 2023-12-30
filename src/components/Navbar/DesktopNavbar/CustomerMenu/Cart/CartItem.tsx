@@ -1,5 +1,3 @@
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
-import { Minus, Plus, ShoppingCart } from 'react-feather'
 import { useCartContext } from '@/contexts/CartContext'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Image from 'next/image'
@@ -17,10 +15,9 @@ export default function CartItem({item}: {item: CartItem}) {
   }
 
   function handleCartItemDec(item: CartItem) {
-    console.log(item)
     dispatchCartItems({type: 'QTY_DEC', cartItem: {id: item.id}})
   }
-  console.log(item)
+
   return (
     <Card className='flex flex-row flex-nowrap w-full justify-between'>
       <div className='flex-grow'>
