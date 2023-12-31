@@ -1,6 +1,5 @@
 'use server'
 import { getCookie, setCookie } from "@/lib/cookies/cookieMethods"
-import { redirect } from "next/navigation"
 
 async function listCartLines() {
   try {
@@ -70,9 +69,7 @@ async function createCartLine({product_id, quantity}: {product_id: string, quant
 async function createCart() {
   try {
     const token = (await getCookie('customer_access_token'))?.value
-    if (!token) {
-      redirect('/access')
-    }
+    if (!token) throw "No access token found"
 
     const response = await fetch(process.env.API_URL + '/client/cart/create', {
       method: 'POST',
@@ -94,7 +91,7 @@ async function createCart() {
 async function deleteCartLine({id}: {id: string}) {
   try {
     const token = (await getCookie('customer_access_token'))?.value
-    if (!token) throw "No customer access token"
+    if (!token) throw "No access token found"
     
     const cart_id = (await getCookie('customer_cart_id'))?.value ? 
     (await getCookie('customer_cart_id'))?.value :
@@ -112,6 +109,39 @@ async function deleteCartLine({id}: {id: string}) {
         cart_line: {
           id,
           cart_id
+        }
+      })
+    })
+
+    const data = await response.json()
+    return data
+  } catch (error) {
+    console.log(error)
+    return {Error: error}
+  }
+}
+
+async function updateCart(updates: {address_id?: string, location?: string}) {
+  try {
+    const token = (await getCookie('customer_access_token'))?.value
+    if (!token) throw "No access token found"
+    
+    const cart_id = (await getCookie('customer_cart_id'))?.value ? 
+    (await getCookie('customer_cart_id'))?.value :
+    (await createCart())?.cart_id
+    if (!cart_id) throw "No cart found"
+
+    const response = await fetch(process.env.API_URL + '/client/cart/update', {
+      method: 'PUT',
+      cache: 'no-cache',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      },
+      body: JSON.stringify({
+        cart: {
+          id: cart_id,
+          updates
         }
       })
     })
@@ -163,5 +193,6 @@ export {
   createCartLine,
   deleteCartLine,
   updateCartLine,
-  createCart
+  createCart,
+  updateCart
 }

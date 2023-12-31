@@ -2,19 +2,24 @@
 import { createCartLine, deleteCartLine, listCartLines, updateCartLine } from "@/lib/api/cart/cart"
 import { fetchProductsById } from "@/lib/api/product/product"
 import { getCookie, setCookie } from "@/lib/cookies/cookieMethods"
+import { redirectToAccess } from "@/lib/navigation/redirect"
 import { getProductImages } from "@/lib/s3/fetchProductImages"
 import { createContext, useContext, useEffect, useReducer } from "react"
 
 const addCartItem = (state: CartItems, cartItem: CartItem) => {
     state = [...state, {...cartItem, quantity: 1}]
-    createCartLine({product_id: cartItem.id, quantity: 1})
+    createCartLine({product_id: cartItem.id, quantity: 1}).then((res: any) => {
+        if (!res || res.Error) redirectToAccess()
+    })
     return state
 }
 const delCartItem = (state: CartItems, id: string) => {
     state.map((item: CartItem, idx: number) => {
         if (item.id === id) {
             state.splice(idx, 1)
-            deleteCartLine({id: item.cart_line_id})
+            deleteCartLine({id: item.cart_line_id}).then((res: any) => {
+                if (!res || res.Error) redirectToAccess()
+            })
             return
         }
     })
@@ -23,7 +28,9 @@ const qtyIncCartItem = (state: CartItems, id: string) => {
     state.map((item: CartItem, idx: number) => {
         if (item.id === id) {
             ++item.quantity
-            updateCartLine({id: item.cart_line_id, updates: {quantity: item.quantity}})
+            updateCartLine({id: item.cart_line_id, updates: {quantity: item.quantity}}).then((res: any) => {
+                if (!res || res.Error) redirectToAccess()
+            })
             return
         }
     })
@@ -33,7 +40,9 @@ const qtyDecCartItem = (state: CartItems, id: string) => {
     state.map((item: CartItem, idx: number) => {
         if (item.id === id) {
             --item.quantity
-            updateCartLine({id: item.cart_line_id, updates: {quantity: item.quantity}})
+            updateCartLine({id: item.cart_line_id, updates: {quantity: item.quantity}}).then((res: any) => {
+                if (!res || res.Error) redirectToAccess()
+            })
             return
         }
     })

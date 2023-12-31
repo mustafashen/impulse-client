@@ -64,9 +64,7 @@ async function fetchWishlistLine(wishlist_line: {id: string}) {
 async function createWishlist() {
   try {
     const token = (await getCookie('customer_access_token'))?.value
-    if (!token) {
-      redirect('/access')
-    }
+    if (!token) throw "No access token found"
 
     const response = await fetch(process.env.API_URL + '/client/wishlist/create', {
       method: 'POST',
@@ -88,10 +86,8 @@ async function createWishlist() {
 async function toggleWishlistLine({product_id}: {product_id: string}) {
   try {
     const token = (await getCookie('customer_access_token'))?.value
-    if (!token) {
-      redirect('/access')
-    }
-    
+    if (!token) throw "No access token found"
+
     const wishlist_id = (await getCookie('customer_wishlist_id'))?.value ? 
       (await getCookie('customer_wishlist_id'))?.value :
       (await createWishlist())?.wishlist_id
@@ -116,7 +112,7 @@ async function toggleWishlistLine({product_id}: {product_id: string}) {
     return data
 
   } catch (error) {
-    console.log(error)
+    return {Error: error}
   }
 }
 

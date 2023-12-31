@@ -1,7 +1,7 @@
 'use client'
 import { fetchProductsById } from "@/lib/api/product/product"
 import { fetchWishlistLine, listWishlistLines, toggleWishlistLine } from "@/lib/api/wishlist/wishlist"
-import { getCookie, setCookie } from "@/lib/cookies/cookieMethods"
+import { redirectToAccess } from "@/lib/navigation/redirect"
 import { getProductImages } from "@/lib/s3/fetchProductImages"
 import { createContext, useContext, useEffect, useReducer } from "react"
 
@@ -19,6 +19,11 @@ function wishlistReducer(state: WishlistItem[], action: {type: 'TOGGLE' | 'SET',
             stateCopy.splice(existingIndex, 1)
         }
         toggleWishlistLine({product_id: wishlistItem.id})
+            .then((res: any) => {
+                if (res.Error || !res) {
+                    redirectToAccess()
+                }
+            })
     } else if (action.type === 'SET' && wishlistItems) {
         stateCopy = wishlistItems
     }
