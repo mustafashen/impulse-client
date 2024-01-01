@@ -86,7 +86,8 @@ async function updateCustomerAddress({address_id, updates}: {address_id: string,
       },
       body: JSON.stringify({address: {id: address_id, updates}})
     })
-  
+    
+    console.log(response)
     const data = await response.json()
     return data
 

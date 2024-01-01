@@ -151,7 +151,7 @@ async function updateCustomer({currentPassword, newPassword}: {currentPassword: 
     const token = (await getCookie('customer_access_token'))?.value
     if (!token) throw "No customer access token"
 
-    const response = await fetch(process.env.API_URL + '/client/customer/delete', {
+    const response = await fetch(process.env.API_URL + '/client/customer/update', {
       method: 'PUT',
       cache: 'no-cache',
       headers: {
