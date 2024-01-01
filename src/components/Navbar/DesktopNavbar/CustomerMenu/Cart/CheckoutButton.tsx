@@ -12,9 +12,10 @@ import {
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
 import { fetchCustomerAddress } from '@/lib/api/address/address'
 import { ChangeEvent, useEffect, useState } from 'react'
+import { redirectToCheckoutPage } from '@/lib/navigation/redirect'
 
 export default function CheckoutButton({cart}: any) {
   const [addresses, setAddresses] = useState<AddressType[] | []>([])
@@ -26,11 +27,17 @@ export default function CheckoutButton({cart}: any) {
     })
   }, [])
 
+  const handleCheckout = async () => {
+    const res = await cartCheckout(selectedAddress)
+    redirectToCheckoutPage(res)
+  }
 
   const [selectedAddress, setSelectedAddress] = useState<string>('')
-  const handleAddressChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log('something')
-    setSelectedAddress(event.target.value)
+  const handleAddressChange = (address: string | undefined) => {
+    console.log(address)
+    if (address) {
+      setSelectedAddress(address)
+    }
   }
 
   return (
@@ -59,7 +66,7 @@ export default function CheckoutButton({cart}: any) {
                   if (address.id) {
                     return (
                       <Card className="flex items-center space-x-2 py-3" key={address.id}>
-                        <RadioGroupItem value={address.id} id={address.id}/>
+                        <RadioGroupItem value={address.id} id={address.id} onClick={() => handleAddressChange(address.id)}/>
                         <Label htmlFor={address.id}>{address.title}</Label>
                       </Card>
                     )
@@ -72,7 +79,7 @@ export default function CheckoutButton({cart}: any) {
         </div>
         <DialogFooter>
           {
-            cart?.cartItems.length && cart?.cartItems.length > 0? <Button onClick={() => cartCheckout(selectedAddress)}>Checkout</Button> : <></>
+            cart?.cartItems.length && cart?.cartItems.length > 0? <Button onClick={() => handleCheckout()}>Checkout</Button> : <></>
           }
         </DialogFooter>
       </DialogContent>

@@ -30,7 +30,6 @@ async function cartCheckout(selectedAddress: string) {
       })
 
       const data = await response.json()
-      console.log(response)
       return data
     }
 
